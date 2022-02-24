@@ -13,11 +13,14 @@ namespace ShipyardListImplement
 
         public List<Ship> Ships { get; set; }
 
+        public List<Warehouse> Warehouses { get; set; }
+
         private DataListSingleton()
         {
             Components = new List<Component>();
             Orders = new List<Order>();
             Ships = new List<Ship>();
+            Warehouses = new List<Warehouse>();
         }
 
         public static DataListSingleton GetInstance()

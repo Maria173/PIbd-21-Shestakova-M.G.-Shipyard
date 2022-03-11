@@ -7,11 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.15">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Unity" Version="5.11.10" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ShipyardBusinessLogic\ShipyardBusinessLogic.csproj" />
+    <ProjectReference Include="..\ShipyardDatabaseImplement\ShipyardDatabaseImplement.csproj" />
     <ProjectReference Include="..\ShipyardFileImplement\ShipyardFileImplement.csproj" />
     <ProjectReference Include="..\ShipyardListImplement\ShipyardListImplement.csproj" />
   </ItemGroup>

@@ -11,6 +11,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="ReportViewerCore.WinForms" Version="15.1.16" />
     <PackageReference Include="Unity" Version="5.11.10" />
   </ItemGroup>
 
@@ -19,6 +20,12 @@
     <ProjectReference Include="..\ShipyardDatabaseImplement\ShipyardDatabaseImplement.csproj" />
     <ProjectReference Include="..\ShipyardFileImplement\ShipyardFileImplement.csproj" />
     <ProjectReference Include="..\ShipyardListImplement\ShipyardListImplement.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ReportOrders.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

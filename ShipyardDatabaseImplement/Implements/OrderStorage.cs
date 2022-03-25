@@ -16,7 +16,7 @@ namespace ShipyardDatabaseImplement.Implements
         public List<OrderViewModel> GetFullList()
         {
             using var context = new ShipyardDatabase();
-            return context.Orders.Include(rec => rec.Ship).Select(rec => new OrderViewModel
+            return context.Orders.Include(rec => rec.Ship).ToList().Select(rec => new OrderViewModel
             {
                 Id = rec.Id,
                 ShipId = rec.ShipId,
@@ -35,8 +35,10 @@ namespace ShipyardDatabaseImplement.Implements
                 return null;
             }
             using var context = new ShipyardDatabase();
-            return context.Orders.Include(rec => rec.Ship).Where(rec => rec.ShipId == model.ShipId).Select(rec => new OrderViewModel
-            {
+            return context.Orders.Include(rec => rec.Ship)
+                    .Where(rec => rec.ShipId == model.ShipId || rec.DateCreate >= model.DateFrom && rec.DateCreate <= model.DateTo)
+                    .ToList().Select(rec => new OrderViewModel
+                    {
                 Id = rec.Id,
                 ShipId = rec.ShipId,
                 ShipName = rec.Ship.ShipName,
@@ -53,39 +55,71 @@ namespace ShipyardDatabaseImplement.Implements
             {
                 return null;
             }
-            using var context = new ShipyardDatabase();
-            var order = context.Orders.FirstOrDefault(rec => rec.Id == model.Id);
-            return order != null ? CreateModel(order, context) : null;
+            using (var context = new ShipyardDatabase())
+            {
+                var order = context.Orders.Include(rec => rec.Ship).FirstOrDefault(rec => rec.Id == model.Id);
+                return order != null ? CreateModel(order, context) : null;
+            }
         }
         public void Insert(OrderBindingModel model)
         {
-            using var context = new ShipyardDatabase();
-            context.Orders.Add(CreateModel(model, new Order()));
-            context.SaveChanges();
+            using (var context = new ShipyardDatabase())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        context.Orders.Add(CreateModel(model, new Order()));
+                        context.SaveChanges();
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
         }
         public void Update(OrderBindingModel model)
         {
-            using var context = new ShipyardDatabase();
-            var element = context.Orders.FirstOrDefault(rec => rec.Id == model.Id);
-            if (element == null)
+            using (var context = new ShipyardDatabase())
             {
-                throw new Exception("Элемент не найден");
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var element = context.Orders.FirstOrDefault(rec => rec.Id == model.Id);
+                        if (element == null)
+                        {
+                            throw new Exception("Элемент не найден");
+                        }
+                        CreateModel(model, element);
+                        context.SaveChanges();
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
             }
-            CreateModel(model, element);
-            context.SaveChanges();
         }
         public void Delete(OrderBindingModel model)
         {
-            using var context = new ShipyardDatabase();
-            Order element = context.Orders.FirstOrDefault(rec => rec.Id == model.Id);
-            if (element != null)
+            using (var context = new ShipyardDatabase())
             {
-                context.Orders.Remove(element);
-                context.SaveChanges();
-            }
-            else
-            {
-                throw new Exception("Элемент не найден");
+                Order element = context.Orders.FirstOrDefault(rec => rec.Id == model.Id);
+                if (element != null)
+                {
+                    context.Orders.Remove(element);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception("Элемент не найден");
+                }
             }
         }
         public static Order CreateModel(OrderBindingModel model,
@@ -105,7 +139,7 @@ namespace ShipyardDatabaseImplement.Implements
             {
                 Id = order.Id,
                 ShipId = order.ShipId,
-                ShipName = context.Ships.FirstOrDefault(rec => rec.Id == order.ShipId)?.ShipName,
+                ShipName = order.Ship.ShipName,
                 Count = order.Count,
                 Sum = order.Sum,
                 Status = order.Status,

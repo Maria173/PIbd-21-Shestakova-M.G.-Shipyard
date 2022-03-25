@@ -6,6 +6,8 @@ using System;
 using System.Windows.Forms;
 using Unity;
 using Unity.Lifetime;
+using ShipyardBusinessLogic.OfficePackage;
+using ShipyardBusinessLogic.OfficePackage.Implements;
 
 namespace ShipyardView
 {
@@ -32,7 +34,6 @@ namespace ShipyardView
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(Container.Resolve<FormMain>());
-            // FileDataListSingleton.Save();
         }
 
         private static IUnityContainer BuildUnityContainer()
@@ -44,6 +45,10 @@ namespace ShipyardView
             currentContainer.RegisterType<IComponentLogic, ComponentLogic>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<IOrderLogic, OrderLogic>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<IShipLogic, ShipLogic>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IReportLogic, ReportLogic>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<AbstractSaveToExcel, SaveToExcel>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<AbstractSaveToWord, SaveToWord>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<AbstractSaveToPdf, SaveToPdf>(new HierarchicalLifetimeManager());
             return currentContainer;
         }
     }

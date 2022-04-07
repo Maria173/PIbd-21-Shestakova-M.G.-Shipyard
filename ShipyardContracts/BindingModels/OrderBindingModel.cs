@@ -8,6 +8,8 @@ namespace ShipyardContracts.BindingModels
         public int? Id { get; set; }
 
         public int ShipId { get; set; }
+        public int CarId { get; set; }
+        public int? ClientId { get; set; }
 
         public int Count { get; set; }
 

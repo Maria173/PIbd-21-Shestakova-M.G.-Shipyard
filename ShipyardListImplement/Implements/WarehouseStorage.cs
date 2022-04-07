@@ -8,7 +8,7 @@ using ShipyardContracts.ViewModels;
 using ShipyardContracts.BindingModels;
 using ShipyardListImplement.Models;
 
-namespace ShipyardListImplement.Implemets
+namespace ShipyardListImplement.Implements
 {
     public class WarehouseStorage : IWarehouseStorage
     {

@@ -9,6 +9,9 @@ namespace ShipyardContracts.ViewModels
         public int Id { get; set; }
 
         public int ShipId { get; set; }
+        public int ClientId { get; set; }
+        [DisplayName("ФИО клиента")]
+        public string ClientFCs { get; set; }
 
         [DisplayName("Изделие")]
         public string ShipName { get; set; }

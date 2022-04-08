@@ -17,5 +17,6 @@ namespace ShipyardDatabaseImplement
         public virtual DbSet<Ship> Ships { set; get; }
         public virtual DbSet<ShipComponent> ShipComponents { set; get; }
         public virtual DbSet<Order> Orders { set; get; }
+        public virtual DbSet<Client> Clients { get; set; }
     }
 }

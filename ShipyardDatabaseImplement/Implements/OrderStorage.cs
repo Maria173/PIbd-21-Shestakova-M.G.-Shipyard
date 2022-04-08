@@ -16,7 +16,7 @@ namespace ShipyardDatabaseImplement.Implements
         public List<OrderViewModel> GetFullList()
         {
             using var context = new ShipyardDatabase();
-            return context.Orders.Include(rec => rec.Ship).ToList().Select(rec => new OrderViewModel
+            return context.Orders.Include(rec => rec.Ship).Select(rec => new OrderViewModel
             {
                 Id = rec.Id,
                 ShipId = rec.ShipId,
@@ -25,7 +25,9 @@ namespace ShipyardDatabaseImplement.Implements
                 Sum = rec.Sum,
                 Status = rec.Status,
                 DateCreate = rec.DateCreate,
-                DateImplement = rec.DateImplement
+                DateImplement = rec.DateImplement,
+                ClientId = rec.ClientId,
+                ClientFCs = rec.Client.ClientFCs
             }).ToList();
         }
         public List<OrderViewModel> GetFilteredList(OrderBindingModel model)
@@ -35,10 +37,11 @@ namespace ShipyardDatabaseImplement.Implements
                 return null;
             }
             using var context = new ShipyardDatabase();
-            return context.Orders.Include(rec => rec.Ship)
-                    .Where(rec => rec.ShipId == model.ShipId || rec.DateCreate >= model.DateFrom && rec.DateCreate <= model.DateTo)
-                    .ToList().Select(rec => new OrderViewModel
-                    {
+            return context.Orders.Include(rec => rec.Ship).Include(rec => rec.Client)
+                    .Where(rec => rec.ShipId == model.ShipId || model.DateFrom.HasValue && model.DateTo.HasValue && 
+                    rec.DateCreate >= model.DateFrom && rec.DateCreate <= model.DateTo || model.ClientId.HasValue && rec.ClientId == model.ClientId)
+                    .Select(rec => new OrderViewModel
+            {
                 Id = rec.Id,
                 ShipId = rec.ShipId,
                 ShipName = rec.Ship.ShipName,
@@ -46,7 +49,9 @@ namespace ShipyardDatabaseImplement.Implements
                 Sum = rec.Sum,
                 Status = rec.Status,
                 DateCreate = rec.DateCreate,
-                DateImplement = rec.DateImplement
+                DateImplement = rec.DateImplement,
+                ClientId = rec.ClientId,
+                ClientFCs = rec.Client.ClientFCs
             }).ToList();
         }
         public OrderViewModel GetElement(OrderBindingModel model)
@@ -131,6 +136,7 @@ namespace ShipyardDatabaseImplement.Implements
             order.Status = model.Status;
             order.DateCreate = model.DateCreate;
             order.DateImplement = model.DateImplement;
+            order.ClientId = model.ClientId.Value;
             return order;
         }
         public OrderViewModel CreateModel(Order order, ShipyardDatabase context)
@@ -144,7 +150,9 @@ namespace ShipyardDatabaseImplement.Implements
                 Sum = order.Sum,
                 Status = order.Status,
                 DateCreate = order.DateCreate,
-                DateImplement = order.DateImplement
+                DateImplement = order.DateImplement,
+                ClientId = order.ClientId,
+                ClientFCs = order.Client.ClientFCs
             };
         }
     }

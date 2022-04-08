@@ -9,6 +9,8 @@ namespace ShipyardDatabaseImplement.Models
         public int Id { get; set; }
         public int ShipId { get; set; }
         public virtual Ship Ship { get; set; }
+        public int ClientId { get; set; }
+        public virtual Client Client { get; set; }
         [Required]
         public int Count { get; set; }
         [Required]

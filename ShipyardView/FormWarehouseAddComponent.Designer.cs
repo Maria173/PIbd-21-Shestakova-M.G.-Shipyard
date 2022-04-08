@@ -67,7 +67,6 @@ namespace ShipyardView
             this.textBoxCount.Location = new System.Drawing.Point(111, 65);
             this.textBoxCount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBoxCount.Name = "textBoxCount";
-            this.textBoxCount.ReadOnly = true;
             this.textBoxCount.Size = new System.Drawing.Size(291, 23);
             this.textBoxCount.TabIndex = 13;
             // 

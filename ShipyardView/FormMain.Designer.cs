@@ -33,6 +33,8 @@ namespace ShipyardView
             this.справочникиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.компонентыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.изделияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.складыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.пополнениеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.buttonCreateOrder = new System.Windows.Forms.Button();
             this.buttonTakeOrderInWork = new System.Windows.Forms.Button();
@@ -47,7 +49,8 @@ namespace ShipyardView
             // 
             this.menuStripGuide.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStripGuide.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.справочникиToolStripMenuItem});
+            this.справочникиToolStripMenuItem,
+            this.пополнениеToolStripMenuItem});
             this.menuStripGuide.Location = new System.Drawing.Point(0, 0);
             this.menuStripGuide.Name = "menuStripGuide";
             this.menuStripGuide.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
@@ -58,7 +61,8 @@ namespace ShipyardView
             // 
             this.справочникиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.компонентыToolStripMenuItem,
-            this.изделияToolStripMenuItem});
+            this.изделияToolStripMenuItem,
+            this.складыToolStripMenuItem});
             this.справочникиToolStripMenuItem.Name = "справочникиToolStripMenuItem";
             this.справочникиToolStripMenuItem.Size = new System.Drawing.Size(94, 20);
             this.справочникиToolStripMenuItem.Text = "Справочники";
@@ -66,16 +70,30 @@ namespace ShipyardView
             // компонентыToolStripMenuItem
             // 
             this.компонентыToolStripMenuItem.Name = "компонентыToolStripMenuItem";
-            this.компонентыToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.компонентыToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.компонентыToolStripMenuItem.Text = "Компоненты";
             this.компонентыToolStripMenuItem.Click += new System.EventHandler(this.компонентыToolStripMenuItem_Click);
             // 
             // изделияToolStripMenuItem
             // 
             this.изделияToolStripMenuItem.Name = "изделияToolStripMenuItem";
-            this.изделияToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.изделияToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.изделияToolStripMenuItem.Text = "Изделия";
             this.изделияToolStripMenuItem.Click += new System.EventHandler(this.изделияToolStripMenuItem_Click);
+            // 
+            // складыToolStripMenuItem
+            // 
+            this.складыToolStripMenuItem.Name = "складыToolStripMenuItem";
+            this.складыToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.складыToolStripMenuItem.Text = "Склады";
+            this.складыToolStripMenuItem.Click += new System.EventHandler(this.складыToolStripMenuItem_Click);
+            // 
+            // пополнениеToolStripMenuItem
+            // 
+            this.пополнениеToolStripMenuItem.Name = "пополнениеToolStripMenuItem";
+            this.пополнениеToolStripMenuItem.Size = new System.Drawing.Size(129, 20);
+            this.пополнениеToolStripMenuItem.Text = "Пополнение склада";
+            this.пополнениеToolStripMenuItem.Click += new System.EventHandler(this.пополнениеToolStripMenuItem_Click);
             // 
             // dataGridView
             // 
@@ -163,7 +181,7 @@ namespace ShipyardView
             this.MainMenuStrip = this.menuStripGuide;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FormMain";
-            this.Text = "Пошив платьев";
+            this.Text = "Верфь";
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.menuStripGuide.ResumeLayout(false);
             this.menuStripGuide.PerformLayout();
@@ -185,5 +203,7 @@ namespace ShipyardView
         private System.Windows.Forms.Button buttonOrderFinished;
         private System.Windows.Forms.Button buttonOrderDelivered;
         private System.Windows.Forms.Button buttonRefreshOrderList;
+        private System.Windows.Forms.ToolStripMenuItem складыToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem пополнениеToolStripMenuItem;
     }
 }

@@ -5,16 +5,20 @@ using ShipyardContracts.StoragesContracts;
 using ShipyardContracts.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ShipyardBusinessLogic.BusinessLogics
 {
     public class OrderLogic : IOrderLogic
     {
         private readonly IOrderStorage _orderStorage;
-
-        public OrderLogic(IOrderStorage orderStorage)
+        private readonly IWarehouseStorage _warehouseStorage;
+        private readonly IShipStorage _shipStorage;
+        public OrderLogic(IOrderStorage orderStorage, IWarehouseStorage warehouseStorage, IShipStorage shipStorage)
         {
             _orderStorage = orderStorage;
+            _warehouseStorage = warehouseStorage;
+            _shipStorage = shipStorage;
         }
 
         public List<OrderViewModel> Read(OrderBindingModel model)
@@ -53,6 +57,12 @@ namespace ShipyardBusinessLogic.BusinessLogics
             {
                 throw new Exception("Заказ не в статусе \"Принят\"");
             }
+            ShipViewModel tempShip = _shipStorage.GetElement(new ShipBindingModel{ Id = order.ShipId });
+            if (!_warehouseStorage.CheckBalance(tempShip.ShipComponents.ToDictionary(ship => ship.Key, ship => ship.Value.Item2 * order.Count)))
+            {
+                throw new Exception("На складах недостаточно компонентов");
+            }
+            _warehouseStorage.WriteOffBalance(tempShip.ShipComponents.ToDictionary(ship => ship.Key, ship => ship.Value.Item2 * order.Count));
             _orderStorage.Update(new OrderBindingModel
             {
                 Id = order.Id,

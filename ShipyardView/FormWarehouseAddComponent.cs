@@ -83,6 +83,5 @@ namespace ShipyardView
             DialogResult = DialogResult.Cancel;
             Close();
         }
-
     }
 }

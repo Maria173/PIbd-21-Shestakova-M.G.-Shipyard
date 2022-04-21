@@ -27,7 +27,7 @@ namespace ShipyardFileImplement.Implements
             {
                 return null;
             }
-            return source.Orders.Where(rec => rec.ShipId == model.ShipId || rec.DateCreate >= model.DateFrom && rec.DateCreate <= model.DateTo)
+            return source.Orders.Where(rec => rec.ShipId == model.ShipId || rec.DateCreate >= model.DateFrom && rec.DateCreate <= model.DateTo || model.ClientId.HasValue && rec.ClientId == model.ClientId)
                 .Select(CreateModel).ToList();
         }
         public OrderViewModel GetElement(OrderBindingModel model)
@@ -70,6 +70,8 @@ namespace ShipyardFileImplement.Implements
             Order order)
         {
             order.ShipId = model.ShipId;
+            order.ClientId = (int)model.ClientId;
+            order.ImplementerId = (int)model.ImplementerId;
             order.Count = model.Count;
             order.Sum = model.Sum;
             order.Status = model.Status;
@@ -84,6 +86,10 @@ namespace ShipyardFileImplement.Implements
                 Id = order.Id,
                 ShipId = order.ShipId,
                 ShipName = source.Ships.FirstOrDefault(rec => rec.Id == order.ShipId)?.ShipName,
+                ClientId = order.ClientId,
+                ClientFCs = source.Clients.FirstOrDefault(ClientFCs => ClientFCs.Id == order.ClientId)?.ClientFCs,
+                ImplementerId = order.ImplementerId,
+                ImplementerFIO = source.Implementers.FirstOrDefault(implementerFIO => implementerFIO.Id == order.ImplementerId)?.ImplementerFIO,
                 Count = order.Count,
                 Sum = order.Sum,
                 Status = order.Status,

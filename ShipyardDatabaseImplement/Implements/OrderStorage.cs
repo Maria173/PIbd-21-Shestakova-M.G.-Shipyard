@@ -16,7 +16,7 @@ namespace ShipyardDatabaseImplement.Implements
         public List<OrderViewModel> GetFullList()
         {
             using var context = new ShipyardDatabase();
-            return context.Orders.Include(rec => rec.Ship).Select(rec => new OrderViewModel
+            return context.Orders.Include(rec => rec.Ship).Include(rec => rec.Client).Include(rec => rec.Implementer).Select(rec => new OrderViewModel
             {
                 Id = rec.Id,
                 ShipId = rec.ShipId,
@@ -37,11 +37,12 @@ namespace ShipyardDatabaseImplement.Implements
                 return null;
             }
             using var context = new ShipyardDatabase();
-            return context.Orders.Include(rec => rec.Ship).Include(rec => rec.Client)
+            return context.Orders.Include(rec => rec.Ship).Include(rec => rec.Client).Include(rec => rec.Implementer)
                     .Where(rec => rec.ShipId == model.ShipId || model.DateFrom.HasValue && model.DateTo.HasValue && 
-                    rec.DateCreate >= model.DateFrom && rec.DateCreate <= model.DateTo || model.ClientId.HasValue && rec.ClientId == model.ClientId)
-                    .Select(rec => new OrderViewModel
-            {
+                    rec.DateCreate >= model.DateFrom && rec.DateCreate <= model.DateTo || model.ClientId.HasValue && rec.ClientId == model.ClientId
+                    || model.SearchStatus.HasValue && model.SearchStatus.Value == rec.Status
+                    || model.ImplementerId.HasValue && rec.ImplementerId == model.ImplementerId && model.Status == rec.Status).Select(rec => new OrderViewModel
+                {
                 Id = rec.Id,
                 ShipId = rec.ShipId,
                 ShipName = rec.Ship.ShipName,
@@ -62,7 +63,7 @@ namespace ShipyardDatabaseImplement.Implements
             }
             using (var context = new ShipyardDatabase())
             {
-                var order = context.Orders.Include(rec => rec.Ship).FirstOrDefault(rec => rec.Id == model.Id);
+                var order = context.Orders.Include(rec => rec.Ship).Include(rec => rec.Client).Include(rec => rec.Implementer).FirstOrDefault(rec => rec.Id == model.Id);
                 return order != null ? CreateModel(order, context) : null;
             }
         }
@@ -94,7 +95,8 @@ namespace ShipyardDatabaseImplement.Implements
                 {
                     try
                     {
-                        var element = context.Orders.FirstOrDefault(rec => rec.Id == model.Id);
+                        var element = context.Orders.Include(rec => rec.Ship).Include(rec => rec.Client).Include(rec => rec.Implementer)
+                            .FirstOrDefault(rec => rec.Id == model.Id);
                         if (element == null)
                         {
                             throw new Exception("Элемент не найден");
@@ -137,6 +139,7 @@ namespace ShipyardDatabaseImplement.Implements
             order.DateCreate = model.DateCreate;
             order.DateImplement = model.DateImplement;
             order.ClientId = model.ClientId.Value;
+            order.ImplementerId = model.ImplementerId;
             return order;
         }
         public OrderViewModel CreateModel(Order order, ShipyardDatabase context)
@@ -152,7 +155,9 @@ namespace ShipyardDatabaseImplement.Implements
                 DateCreate = order.DateCreate,
                 DateImplement = order.DateImplement,
                 ClientId = order.ClientId,
-                ClientFCs = order.Client.ClientFCs
+                ClientFCs = order.Client.ClientFCs,
+                ImplementerId = order.ImplementerId,
+                ImplementerFIO = order.ImplementerId.HasValue ? order.Implementer.ImplementerFIO : String.Empty
             };
         }
     }

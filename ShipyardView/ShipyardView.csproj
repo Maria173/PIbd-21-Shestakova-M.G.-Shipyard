@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShipyardBusinessLogic\ShipyardBusinessLogic.csproj" />
+    <ProjectReference Include="..\ShipyardFileImplement\ShipyardFileImplement.csproj" />
     <ProjectReference Include="..\ShipyardListImplement\ShipyardListImplement.csproj" />
   </ItemGroup>
 

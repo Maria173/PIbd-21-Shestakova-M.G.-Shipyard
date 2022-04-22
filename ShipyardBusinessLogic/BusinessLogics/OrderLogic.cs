@@ -58,11 +58,17 @@ namespace ShipyardBusinessLogic.BusinessLogics
                 throw new Exception("Заказ не в статусе \"Принят\"");
             }
             ShipViewModel tempShip = _shipStorage.GetElement(new ShipBindingModel{ Id = order.ShipId });
-            if (!_warehouseStorage.CheckBalance(tempShip.ShipComponents.ToDictionary(ship => ship.Key, ship => ship.Value.Item2 * order.Count)))
+            try
             {
-                throw new Exception("На складах недостаточно компонентов");
+                if (!_warehouseStorage.WriteOffBalance(tempShip.ShipComponents.ToDictionary(ship => ship.Key, ship => ship.Value.Item2 * order.Count)))
+                {
+                    throw new Exception("На складах недостаточно компонентов");
+                }
             }
-            _warehouseStorage.WriteOffBalance(tempShip.ShipComponents.ToDictionary(ship => ship.Key, ship => ship.Value.Item2 * order.Count));
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             _orderStorage.Update(new OrderBindingModel
             {
                 Id = order.Id,

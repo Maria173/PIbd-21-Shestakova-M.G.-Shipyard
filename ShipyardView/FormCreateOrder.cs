@@ -13,11 +13,14 @@ namespace ShipyardView
 
         private readonly IOrderLogic _logicO;
 
-        public FormCreateOrder(IShipLogic logicD, IOrderLogic logicO)
+        private readonly IClientLogic _logicC;
+
+        public FormCreateOrder(IShipLogic logicD, IOrderLogic logicO, IClientLogic logicC)
         {
             InitializeComponent();
             _logicD = logicD;
             _logicO = logicO;
+            _logicC = logicC;
         }
 
         private void FormCreateOrder_Load(object sender, EventArgs e)
@@ -32,9 +35,13 @@ namespace ShipyardView
                     comboBoxShipName.DataSource = list;
                     comboBoxShipName.SelectedItem = null;
                 }
-                else
+                List<ClientViewModel> listC = _logicC.Read(null);
+                if (listC != null)
                 {
-                    throw new Exception("Не удалось загрузить список изделий");
+                    comboBoxClient.DisplayMember = "FCs";
+                    comboBoxClient.ValueMember = "Id";
+                    comboBoxClient.DataSource = listC;
+                    comboBoxClient.SelectedItem = null;
                 }
             }
             catch (Exception ex)
@@ -83,13 +90,19 @@ namespace ShipyardView
                 MessageBox.Show("Выберите изделие", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            if (comboBoxClient.SelectedValue == null)
+            {
+                MessageBox.Show("Выберите клиента", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             try
             {
                 _logicO.CreateOrder(new CreateOrderBindingModel
                 {
                     ShipId = Convert.ToInt32(comboBoxShipName.SelectedValue),
                     Count = Convert.ToInt32(textBoxShipCount.Text),
-                    Sum = Convert.ToDecimal(textBoxSum.Text)
+                    Sum = Convert.ToDecimal(textBoxSum.Text),
+                    ClientId = Convert.ToInt32(comboBoxClient.SelectedValue)
                 });
                 MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DialogResult = DialogResult.OK;

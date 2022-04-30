@@ -35,7 +35,9 @@ namespace ShipyardListImplement.Implements
             List<OrderViewModel> result = new List<OrderViewModel>();
             foreach (var Order in _source.Orders)
             {
-                if (Order.ShipId == model.ShipId || Order.DateCreate >= model.DateFrom && Order.DateCreate <= model.DateTo)
+                if ((!model.DateFrom.HasValue && !model.DateTo.HasValue && Order.DateCreate == model.DateCreate) ||
+            (model.DateFrom.HasValue && model.DateTo.HasValue && Order.DateCreate.Date >= model.DateFrom.Value.Date && Order.DateCreate.Date <= model.DateTo.Value.Date) ||
+            (model.ClientId.HasValue && Order.ClientId == model.ClientId))
                 {
                     result.Add(CreateModel(Order));
                 }
@@ -110,6 +112,8 @@ namespace ShipyardListImplement.Implements
             order.Sum = model.Sum;
             order.DateCreate = model.DateCreate;
             order.DateImplement = model.DateImplement;
+            order.ClientId = (int)model.ClientId;
+            order.ImplementerId = (int)model.ImplementerId;
             return order;
         }
 
@@ -124,11 +128,33 @@ namespace ShipyardListImplement.Implements
                     break;
                 }
             }
+            string clientFCs = null;
+            foreach (Client client in _source.Clients)
+            {
+                if (order.ClientId == client.Id)
+                {
+                    clientFCs = client.ClientFCs;
+                    break;
+                }
+            }
+            string implementerFIO = null;
+            foreach (Implementer implementer in _source.Implementers)
+            {
+                if (order.ImplementerId == implementer.Id)
+                {
+                    implementerFIO = implementer.ImplementerFIO;
+                    break;
+                }
+            }
             return new OrderViewModel
             {
                 Id = order.Id,
                 ShipId = order.ShipId,
                 ShipName = shipName,
+                ClientId = order.ClientId,
+                ClientFCs = clientFCs,
+                ImplementerId = order.ImplementerId,
+                ImplementerFIO = implementerFIO,
                 Count = order.Count,
                 Status = order.Status,
                 Sum = order.Sum,

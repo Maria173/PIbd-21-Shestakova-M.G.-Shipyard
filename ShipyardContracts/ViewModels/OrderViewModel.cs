@@ -10,6 +10,8 @@ namespace ShipyardContracts.ViewModels
 
         public int ShipId { get; set; }
         public int ClientId { get; set; }
+        public int? ImplementerId { get; set; }
+
         [DisplayName("ФИО клиента")]
         public string ClientFCs { get; set; }
 
@@ -21,6 +23,9 @@ namespace ShipyardContracts.ViewModels
 
         [DisplayName("Сумма")]
         public decimal Sum { get; set; }
+
+        [DisplayName("Исполнитель")]
+        public string ImplementerFIO { get; set; }
 
         [DisplayName("Статус")]
         public OrderStatus Status { get; set; }

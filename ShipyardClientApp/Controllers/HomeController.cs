@@ -142,5 +142,12 @@ namespace ShipyardClientApp.Controllers
             return count * prod.Price;
         }
 
+        [HttpGet]
+        public IActionResult MessageInfo()
+        {
+            ViewBag.MessagesInfo = APIClient.GetRequest<List<MessageInfoViewModel>>($"api/main/GetMessages");
+            return View();
+        }
+
     }
 }

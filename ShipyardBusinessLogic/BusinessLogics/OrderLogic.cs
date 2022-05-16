@@ -5,16 +5,20 @@ using ShipyardContracts.StoragesContracts;
 using ShipyardContracts.ViewModels;
 using System;
 using System.Collections.Generic;
+using ShipyardBusinessLogic.MailWorker;
 
 namespace ShipyardBusinessLogic.BusinessLogics
 {
     public class OrderLogic : IOrderLogic
     {
         private readonly IOrderStorage _orderStorage;
-
-        public OrderLogic(IOrderStorage orderStorage)
+        private readonly AbstractMailWorker _mailWorker;
+        private readonly IClientStorage _clientStorage;
+        public OrderLogic(IOrderStorage orderStorage, AbstractMailWorker mailWorker, IClientStorage clientStorage)
         {
             _orderStorage = orderStorage;
+            _mailWorker = mailWorker;
+            _clientStorage = clientStorage;
         }
 
         public List<OrderViewModel> Read(OrderBindingModel model)
@@ -41,6 +45,12 @@ namespace ShipyardBusinessLogic.BusinessLogics
                 Status = OrderStatus.Принят,
                 ClientId = model.ClientId
             });
+            _mailWorker.MailSendAsync(new MailSendInfoBindingModel
+            {
+                MailAddress = _clientStorage.GetElement(new ClientBindingModel { Id = model.ClientId })?.Login,
+                Subject = "Создан новый заказ",
+                Text = $"Дата заказа: {DateTime.Now}, сумма заказа: {model.Sum}"
+            });
         }
 
         public void TakeOrderInWork(ChangeStatusBindingModel model)
@@ -65,6 +75,12 @@ namespace ShipyardBusinessLogic.BusinessLogics
                 Status = OrderStatus.Выполняется,
                 ClientId = order.ClientId,
                 ImplementerId = model.ImplementerId
+            });
+            _mailWorker.MailSendAsync(new MailSendInfoBindingModel
+            {
+                MailAddress = _clientStorage.GetElement(new ClientBindingModel { Id = order.ClientId })?.Login,
+                Subject = $"Смена статуса заказа №{order.Id}",
+                Text = $"Статус изменен на: {OrderStatus.Выполняется}"
             });
         }
 
@@ -91,6 +107,12 @@ namespace ShipyardBusinessLogic.BusinessLogics
                 ClientId = order.ClientId,
                 ImplementerId = order.ImplementerId
             });
+            _mailWorker.MailSendAsync(new MailSendInfoBindingModel
+            {
+                MailAddress = _clientStorage.GetElement(new ClientBindingModel { Id = order.ClientId })?.Login,
+                Subject = $"Смена статуса заказа №{order.Id}",
+                Text = $"Статус изменен на: {OrderStatus.Готов}"
+            });
         }
 
         public void DeliveryOrder(ChangeStatusBindingModel model)
@@ -115,6 +137,12 @@ namespace ShipyardBusinessLogic.BusinessLogics
                 Status = OrderStatus.Выдан,
                 ClientId = order.ClientId,
                 ImplementerId = order.ImplementerId
+            });
+            _mailWorker.MailSendAsync(new MailSendInfoBindingModel
+            {
+                MailAddress = _clientStorage.GetElement(new ClientBindingModel { Id = order.ClientId })?.Login,
+                Subject = $"Смена статуса заказа №{order.Id}",
+                Text = $"Статус изменен на: {OrderStatus.Выдан}"
             });
         }
     }

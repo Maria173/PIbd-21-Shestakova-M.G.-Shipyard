@@ -8,12 +8,15 @@ using ShipyardContracts.BusinessLogicsContracts;
 using ShipyardContracts.StoragesContracts;
 using ShipyardContracts.ViewModels;
 using ShipyardContracts.Enums;
+using System.Text.RegularExpressions;
 
 namespace ShipyardBusinessLogic.BusinessLogics
 {
     public class ClientLogic : IClientLogic
     {
         private readonly IClientStorage clientStorage;
+        private readonly int passwordMaxLength = 50;
+        private readonly int passwordMinLength = 10;
         public ClientLogic(IClientStorage clientStorage)
         {
             this.clientStorage = clientStorage;
@@ -36,6 +39,17 @@ namespace ShipyardBusinessLogic.BusinessLogics
             if (element != null && element.Id != model.Id)
             {
                 throw new Exception("Уже есть клиент с таким логином");
+            }
+            if (!Regex.IsMatch(model.Login, @"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*"
+                                            + "@"
+                                            + @"((([\-\w]+\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\.){3}[0-9]{1,3}))$"))
+            {
+                throw new Exception("В качестве логина должна быть указана почта");
+            }
+            if (model.Password.Length > passwordMaxLength || model.Password.Length < passwordMinLength || !Regex.IsMatch(model.Password,
+                @"^((\w+\d+\W+)|(\w+\W+\d+)|(\d+\w+\W+)|(\d+\W+\w+)|(\W+\w+\d+)|(\W+\d+\w+))[\w\d\W]*$"))
+            {
+                throw new Exception($"Пароль длиной от {passwordMinLength} до { passwordMaxLength } должен быть и из цифр, букв и небуквенных символов");
             }
             if (model.Id.HasValue)
             {

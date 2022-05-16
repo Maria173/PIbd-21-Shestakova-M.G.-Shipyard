@@ -1,39 +1,42 @@
 ﻿using ShipyardContracts.Enums;
 using System;
-using System.ComponentModel;
+using ShipyardContracts.Attributes;
+using System.Runtime.Serialization;
+
 
 namespace ShipyardContracts.ViewModels
 {
     public class OrderViewModel
     {
+        [Column(title: "Номер", width: 100)]
         public int Id { get; set; }
 
         public int ShipId { get; set; }
         public int ClientId { get; set; }
         public int? ImplementerId { get; set; }
 
-        [DisplayName("ФИО клиента")]
+        [Column(title: "Клиент", width: 150)]
         public string ClientFCs { get; set; }
 
-        [DisplayName("Изделие")]
+        [Column(title: "Изделие", gridViewAutoSize: GridViewAutoSize.Fill)]
         public string ShipName { get; set; }
 
-        [DisplayName("Количество")]
+        [Column(title: "Количество", width: 100)]
         public int Count { get; set; }
 
-        [DisplayName("Сумма")]
+        [Column(title: "Сумма", width: 50)]
         public decimal Sum { get; set; }
 
-        [DisplayName("Исполнитель")]
+        [Column(title: "Исполнитель", width: 150)]
         public string ImplementerFIO { get; set; }
 
-        [DisplayName("Статус")]
+        [Column(title: "Статус", width: 100)]
         public OrderStatus Status { get; set; }
 
-        [DisplayName("Дата создания")]
+        [Column(title: "Дата создания", width: 100)]
         public DateTime DateCreate { get; set; }
 
-        [DisplayName("Дата выполнения")]
+        [Column(title: "Дата выполнения", width: 100)]
         public DateTime? DateImplement { get; set; }
     }
 }

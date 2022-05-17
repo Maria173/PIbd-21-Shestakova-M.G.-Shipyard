@@ -35,7 +35,7 @@ namespace ShipyardListImplement.Implements
             List<OrderViewModel> result = new List<OrderViewModel>();
             foreach (var Order in _source.Orders)
             {
-                if (Order.ShipId == model.ShipId)
+                if (Order.ShipId == model.ShipId || Order.DateCreate >= model.DateFrom && Order.DateCreate <= model.DateTo)
                 {
                     result.Add(CreateModel(Order));
                 }

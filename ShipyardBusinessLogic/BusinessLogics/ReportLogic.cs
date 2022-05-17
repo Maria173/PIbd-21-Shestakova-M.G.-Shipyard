@@ -94,7 +94,8 @@ namespace ShipyardBusinessLogic.BusinessLogics
                 ShipName = x.ShipName,
                 Count = x.Count,
                 Sum = x.Sum,
-                Status = Enum.GetName(typeof(OrderStatus), x.Status)
+                Status = Enum.GetName(typeof(OrderStatus), x.Status),
+                ClientFCs = x.ClientFCs
             })
            .ToList();
         }

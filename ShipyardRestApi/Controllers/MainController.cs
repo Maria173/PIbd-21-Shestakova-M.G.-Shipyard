@@ -13,10 +13,12 @@ namespace ShipyardRestApi.Controllers
     {
         private readonly IOrderLogic order;
         private readonly IShipLogic ship;
-        public MainController(IOrderLogic order, IShipLogic ship)
+        private readonly IMessageInfoLogic message;
+        public MainController(IOrderLogic order, IShipLogic ship, IMessageInfoLogic message)
         {
             this.order = order;
             this.ship = ship;
+            this.message = message;
         }
         [HttpGet]
         public List<ShipViewModel> GetShipList() => ship.Read(null)?.ToList();
@@ -24,6 +26,8 @@ namespace ShipyardRestApi.Controllers
         public ShipViewModel GetShip(int shipId) => ship.Read(new ShipBindingModel { Id = shipId })?[0];
         [HttpGet]
         public List<OrderViewModel> GetOrders(int clientId) => order.Read(new OrderBindingModel { ClientId = clientId });
+        [HttpGet]
+        public List<MessageInfoViewModel> GetMessages() => message.Read(null)?.ToList();
         [HttpPost]
         public void CreateOrder(CreateOrderBindingModel model) =>
         order.CreateOrder(model);

@@ -27,7 +27,8 @@ namespace ShipyardFileImplement.Implements
             {
                 return null;
             }
-            return source.Orders.Where(rec => rec.ShipId == model.ShipId).Select(CreateModel).ToList();
+            return source.Orders.Where(rec => rec.ShipId == model.ShipId || rec.DateCreate >= model.DateFrom && rec.DateCreate <= model.DateTo)
+                .Select(CreateModel).ToList();
         }
         public OrderViewModel GetElement(OrderBindingModel model)
         {

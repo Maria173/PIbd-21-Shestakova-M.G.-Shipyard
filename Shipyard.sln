@@ -17,7 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShipyardListImplement", "Sh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShipyardFileImplement", "ShipyardFileImplement\ShipyardFileImplement.csproj", "{6FF3F08A-F719-4632-8631-045CF398E5CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShipyardDatabaseImplement", "ShipyardDatabaseImplement\ShipyardDatabaseImplement.csproj", "{4D235743-F353-4564-985C-3E44BAB689F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShipyardDatabaseImplement", "ShipyardDatabaseImplement\ShipyardDatabaseImplement.csproj", "{4D235743-F353-4564-985C-3E44BAB689F0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShipyardRestApi", "ShipyardRestApi\ShipyardRestApi.csproj", "{41091CC9-AE1D-48A9-A567-ABC95D92DEF6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShipyardClientApp", "ShipyardClientApp\ShipyardClientApp.csproj", "{DCA89EFE-1E2B-4978-B168-A11EE04D6CE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShipyardWarehouseApp", "ShipyardWarehouseApp\ShipyardWarehouseApp.csproj", "{94D15EC4-B493-42C4-94C3-AD3E316632C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +55,18 @@ Global
 		{4D235743-F353-4564-985C-3E44BAB689F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D235743-F353-4564-985C-3E44BAB689F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D235743-F353-4564-985C-3E44BAB689F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41091CC9-AE1D-48A9-A567-ABC95D92DEF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41091CC9-AE1D-48A9-A567-ABC95D92DEF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41091CC9-AE1D-48A9-A567-ABC95D92DEF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41091CC9-AE1D-48A9-A567-ABC95D92DEF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCA89EFE-1E2B-4978-B168-A11EE04D6CE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCA89EFE-1E2B-4978-B168-A11EE04D6CE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCA89EFE-1E2B-4978-B168-A11EE04D6CE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCA89EFE-1E2B-4978-B168-A11EE04D6CE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94D15EC4-B493-42C4-94C3-AD3E316632C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94D15EC4-B493-42C4-94C3-AD3E316632C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94D15EC4-B493-42C4-94C3-AD3E316632C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94D15EC4-B493-42C4-94C3-AD3E316632C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

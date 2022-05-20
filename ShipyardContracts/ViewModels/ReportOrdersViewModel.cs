@@ -10,6 +10,7 @@ namespace ShipyardContracts.ViewModels
     {
         public DateTime DateCreate { get; set; }
         public string ShipName { get; set; }
+        public string ClientFCs { get; set; }
         public int Count { get; set; }
         public decimal Sum { get; set; }
         public string Status { get; set; }
